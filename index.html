@@ -15,12 +15,16 @@
     }
 
     .envelope {
-      width: 80vw;
-      height: 60vh;
-      background: #fff;          /* branco sólido */
+      width: 70vw;
+      height: 50vh;
+      max-width: 500px;
+      max-height: 350px;
+      min-width: 300px;
+      min-height: 200px;
+      background: #fff;
       position: relative;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
       overflow: hidden;
     }
 
@@ -35,7 +39,7 @@
       clip-path: polygon(0 0, 50% 50%, 100% 0);
       transform-origin: top;
       transition: transform 1s ease;
-      z-index: 1;                /* fica atrás do coração */
+      z-index: 1;
     }
 
     .envelope.open .flap {
@@ -50,11 +54,11 @@
       transform: translate(-50%, -50%);
       background: none;
       border: none;
-      font-size: 2.5rem;
+      font-size: clamp(2rem, 5vw, 3rem);
       cursor: pointer;
       animation: pulse 1.5s infinite;
       transition: transform 0.3s;
-      z-index: 3;                /* por cima de tudo antes do clique */
+      z-index: 3;
     }
 
     .heart-btn:hover {
@@ -67,23 +71,24 @@
       100% { transform: translate(-50%, -50%) scale(1); }
     }
 
-    /* Carta (inicialmente invisível e NÃO clicável) */
+    /* Carta */
     .letter {
-      background: #fff0;         /* transparente */
+      background: transparent;
       width: 90%;
-      height: 140px;
+      height: 70%;
       margin: 20px auto;
       border-radius: 6px;
       padding: 10px;
       overflow-y: auto;
       opacity: 0;
       transition: opacity 1s ease;
-      pointer-events: none;      /* não bloqueia o clique no coração */
+      pointer-events: none;
       z-index: 2;
-      position: relative;        /* garante camada própria */
+      position: relative;
+      font-size: clamp(14px, 2vw, 18px); /* responsivo */
+      line-height: 1.5;
     }
 
-    /* Quando a carta aparece, volta a aceitar cliques/scroll */
     .letter.show {
       opacity: 1;
       pointer-events: auto;
@@ -103,13 +108,20 @@
     const envelope = document.getElementById("envelope");
     const letter = document.getElementById("letter");
 
-    const message = 'Oi minha linda \n\nQueria te dizer que você é muito especial pra mim. 💖\nfiz essa cartinha pra te\n dizer o quanto você\n é importante pra mim! 😉\n Te amo mais doq açai \nSaiba que enquanto eu existir,\n pode contar cmg,\n sempre farei o meu melhor pra\n te fazer feliz!.\n -Cícero\n (A amizade multiplica as alegrias\n e divide as tritezas)';
+    const message = `Oi minha linda 💕\n\n
+Queria te dizer que você é muito especial pra mim.\n
+Fiz essa cartinha pra te dizer o quanto você é importante! 😉\n
+Te amo mais do que açaí 🥰\n\n
+Saiba que enquanto eu existir, pode contar comigo.\n
+Sempre farei o meu melhor pra te ver feliz!\n\n
+- Cícero ✨\n
+"A amizade multiplica as alegrias e divide as tristezas."`;
 
     btn.addEventListener("click", () => {
-      envelope.classList.add("open");   // abre envelope
-      letter.classList.add("show");     // mostra carta
-      typeWriter(message, letter);      // escreve texto
-      btn.style.display = "none";       // esconde o coração depois do clique
+      envelope.classList.add("open");
+      letter.classList.add("show");
+      typeWriter(message, letter);
+      btn.style.display = "none";
     });
 
     function typeWriter(text, element) {
@@ -119,7 +131,7 @@
         element.innerHTML += text.charAt(i);
         i++;
         if (i > text.length) clearInterval(interval);
-      }, 50); // velocidade da digitação
+      }, 50);
     }
   </script>
 
