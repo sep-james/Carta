@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cartinha 💌</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #ffe6eb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .envelope {
+      width: 300px;
+      height: 200px;
+      background: #fff;          /* branco sólido */
+      position: relative;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+
+    /* Aba do envelope (tampinha) */
+    .flap {
+      width: 100%;
+      height: 100%;
+      background: #ff4d6d;
+      position: absolute;
+      top: 0;
+      left: 0;
+      clip-path: polygon(0 0, 50% 50%, 100% 0);
+      transform-origin: top;
+      transition: transform 1s ease;
+      z-index: 1;                /* fica atrás do coração */
+    }
+
+    .envelope.open .flap {
+      transform: rotateX(180deg);
+    }
+
+    /* Botão de coração (lacre) */
+    .heart-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: none;
+      border: none;
+      font-size: 2.5rem;
+      cursor: pointer;
+      animation: pulse 1.5s infinite;
+      transition: transform 0.3s;
+      z-index: 3;                /* por cima de tudo antes do clique */
+    }
+
+    .heart-btn:hover {
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    @keyframes pulse {
+      0% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.2); }
+      100% { transform: translate(-50%, -50%) scale(1); }
+    }
+
+    /* Carta (inicialmente invisível e NÃO clicável) */
+    .letter {
+      background: #fff0;         /* transparente */
+      width: 90%;
+      height: 140px;
+      margin: 20px auto;
+      border-radius: 6px;
+      padding: 10px;
+      overflow-y: auto;
+      opacity: 0;
+      transition: opacity 1s ease;
+      pointer-events: none;      /* não bloqueia o clique no coração */
+      z-index: 2;
+      position: relative;        /* garante camada própria */
+    }
+
+    /* Quando a carta aparece, volta a aceitar cliques/scroll */
+    .letter.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="envelope" id="envelope">
+    <div class="flap"></div>
+    <button class="heart-btn" id="openBtn">❤️</button>
+    <div class="letter" id="letter"></div>
+  </div>
+
+  <script>
+    const btn = document.getElementById("openBtn");
+    const envelope = document.getElementById("envelope");
+    const letter = document.getElementById("letter");
+
+    const message = 'Oi minha linda \n\nQueria te dizer que você é muito especial pra mim. 💖\nfiz essa cartinha pra te\n dizer o quanto você\n é importante pra mim! 😉\n Te amo mais doq açai \nSaiba que enquanto eu existir,\n pode contar cmg,\n sempre farei o meu melhor pra\n te fazer feliz!.\n -Cícero\n (A amizade multiplica as alegrias\n e divide as tritezas)';
+
+    btn.addEventListener("click", () => {
+      envelope.classList.add("open");   // abre envelope
+      letter.classList.add("show");     // mostra carta
+      typeWriter(message, letter);      // escreve texto
+      btn.style.display = "none";       // esconde o coração depois do clique
+    });
+
+    function typeWriter(text, element) {
+      let i = 0;
+      element.innerHTML = "";
+      const interval = setInterval(() => {
+        element.innerHTML += text.charAt(i);
+        i++;
+        if (i > text.length) clearInterval(interval);
+      }, 50); // velocidade da digitação
+    }
+  </script>
+
+</body>
+</html>
